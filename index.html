@@ -218,6 +218,53 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
 .work-counter button:hover{background:var(--pink);color:#fff}
 .work-counter button:active{transform:scale(.92)}
 .work-counter .count{font-size:16px;font-weight:700;min-width:24px;text-align:center;color:var(--pink-deep)}
+
+/* ===== 业务管道看板 ===== */
+.work-alerts{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.alert-item{font-size:12px;padding:8px 12px;border-radius:10px;background:var(--pink-soft);color:var(--pink-deep);display:flex;align-items:center;gap:6px;font-weight:600}
+.alert-item.warn{background:#fff3e0;color:#e65100}
+.alert-item.danger{background:#ffe0e6;color:#e6557d}
+.alert-empty{font-size:12px;color:var(--muted);padding:4px 0}
+.pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:8px}
+.pipe-stage{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:10px 6px;text-align:center;transition:all .15s}
+.pipe-top{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:6px}
+.pipe-top button{width:23px;height:23px;border-radius:7px;border:none;background:var(--pink-soft);color:var(--pink-deep);font-size:15px;font-weight:700;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.pipe-top button:hover{background:var(--pink);color:#fff}
+.pipe-top button:active{transform:scale(.92)}
+.pipe-count{font-size:20px;font-weight:800;color:var(--pink-deep);min-width:22px}
+.pipe-label{font-size:11px;color:var(--muted);font-weight:600;line-height:1.3}
+
+/* ===== 房源管道 ===== */
+.house-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.house-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:14px;position:relative}
+.house-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding-right:24px}
+.house-name{font-size:15px;font-weight:700;line-height:1.3}
+.house-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:8px;border:none;background:var(--pink-soft);color:var(--pink-deep);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.house-del:hover{background:var(--pink);color:#fff}
+.house-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.house-tag{font-size:11px;padding:3px 8px;border-radius:8px;background:var(--pink-soft);color:var(--pink-deep);font-weight:600}
+.house-meta{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.house-meta b{color:var(--text);font-weight:700}
+.house-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.house-stage-wrap{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.house-stage-select{padding:6px 8px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:12px;font-family:inherit;color:var(--text);font-weight:600}
+.house-timer{font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px;white-space:nowrap}
+.house-timer.ok{background:#e8f5e9;color:#2e7d32}
+.house-timer.warn{background:#fff3e0;color:#e65100}
+.house-timer.danger{background:#ffe0e6;color:#e6557d}
+.house-next{margin-top:8px;font-size:12px;color:var(--text);background:var(--pink-soft);border-radius:10px;padding:8px 10px;line-height:1.5}
+.add-house-btn{width:100%;padding:12px;border:1.5px dashed var(--pink);background:rgba(255,255,255,.5);color:var(--pink-deep);border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.add-house-btn:hover{background:var(--pink-soft)}
+.house-form{margin-top:12px;background:var(--pink-soft);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.hf-row{display:flex;gap:8px}
+.hf-row input[type=text],.hf-row input[type=number],.hf-row input[type=date],.hf-row select{padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-family:inherit;color:var(--text);width:100%;min-width:0}
+.hf-row-num label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted);flex:1}
+.hf-check{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);flex:1}
+.hf-stage-label,.hf-sign-label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted);flex:1}
+.hf-actions{display:flex;gap:8px}
+.hf-save{flex:1;padding:11px;border:none;background:var(--ins-grad);color:#fff;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.hf-save:hover{opacity:.92}
+.hf-cancel{padding:11px 18px;border:1px solid var(--border);background:#fff;color:var(--muted);border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit}
 .study-day{background:rgba(255,255,255,.85);border-radius:18px;padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
 .study-day-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .study-day-num{width:36px;height:36px;border-radius:50%;background:var(--ins-grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;box-shadow:0 2px 8px rgba(255,107,157,.3)}
@@ -381,13 +428,45 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
                 <div class="habit-grid" id="habit-grid"></div>
             </div>
 
-            <!-- 工作记录 -->
+            <!-- 工作记录：业务管道 -->
             <div class="card">
-                <div class="card-header"><span>💼 工作记录</span><span id="work-summary">0 接触 · 0 看房</span></div>
-                <div class="work-grid" id="work-grid"></div>
+                <div class="card-header"><span>💼 工作记录 · 业务管道</span><span id="work-summary">建联 0 · 线索 0 · 签约 0 · 成交 0</span></div>
+                <div id="work-alerts" class="work-alerts"></div>
+                <div class="pipeline" id="pipeline"></div>
                 <div class="work-progress-bar" id="work-progress-bar" style="margin-top:14px">
-                    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px"><span>今日目标进度</span><span id="work-goal-text">0/10</span></div>
+                    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px"><span>今日管道动作</span><span id="work-goal-text">0/10</span></div>
                     <div style="height:8px;background:var(--pink-soft);border-radius:8px;overflow:hidden"><div id="work-progress-fill" style="height:100%;width:0%;background:var(--ins-grad);border-radius:8px;transition:width .3s"></div></div>
+                </div>
+            </div>
+
+            <!-- 房源管道 -->
+            <div class="card">
+                <div class="card-header"><span>🏠 房源管道</span><span id="house-count">0 套在管</span></div>
+                <div id="house-list" class="house-list"></div>
+                <button class="add-house-btn" id="add-house-btn">+ 添加房源</button>
+                <div class="house-form" id="house-form" style="display:none">
+                    <div class="hf-row">
+                        <input id="hf-name" type="text" placeholder="小区名称（必填）">
+                        <input id="hf-agent" type="text" placeholder="报房源中介">
+                    </div>
+                    <div class="hf-row hf-row-num">
+                        <label>房龄(年)<input id="hf-age" type="number" placeholder="如 12" min="0"></label>
+                        <label>挂售(月)<input id="hf-listed" type="number" placeholder="如 18" min="0"></label>
+                        <label>底价(万)<input id="hf-price" type="number" placeholder="如 85" min="0"></label>
+                        <label>预算(万)<input id="hf-budget" type="number" placeholder="如 8" min="0"></label>
+                    </div>
+                    <div class="hf-row">
+                        <label class="hf-check"><input id="hf-elevator" type="checkbox" checked> 带电梯</label>
+                        <label class="hf-stage-label">阶段<select id="hf-stage"></select></label>
+                    </div>
+                    <div class="hf-row">
+                        <label class="hf-sign-label">签约日<input id="hf-sign" type="date"></label>
+                    </div>
+                    <input id="hf-next" type="text" placeholder="下一步动作（如：下周盯软装完工 / 约 5 个中介集中看房）">
+                    <div class="hf-actions">
+                        <button id="hf-save" class="hf-save">保存房源</button>
+                        <button id="hf-cancel" class="hf-cancel">取消</button>
+                    </div>
                 </div>
             </div>
 
@@ -603,6 +682,7 @@ const PRESET={
 function loadData(){try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON.parse(r)}catch(e){}const t=todayStr();const init={dates:{},review:[]};init.dates[t]={daily:[],inspiration:PRESET.inspiration.map((s,i)=>({id:'i'+Date.now()+i,text:s,done:false})),trends:PRESET.trends.map((s,i)=>({id:'t'+Date.now()+i,postedAt:t,recordedAt:Date.now(),...s})),money:[]};init.review=PRESET.review.map((s,i)=>({id:'r'+Date.now()+i,...s}));saveData(init);return init}
 function saveData(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
 let state=loadData();
+if(!state.houses)state.houses=[];
 
 function todayStr(){return dateToStr(new Date())}
 function dateToStr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -699,17 +779,21 @@ const HABITS=[
     {key:'reading',icon:'📖',label:'学习充电'}
 ];
 const WORK_ITEMS=[
-    {key:'agent',icon:'🤝',label:'接触中介'},
-    {key:'consult',icon:'💬',label:'客户咨询'},
-    {key:'viewing',icon:'🏠',label:'看房套数'},
-    {key:'follow',icon:'📞',label:'跟进回访'}
+    {key:'agent',icon:'🤝',label:'建联中介'},
+    {key:'lead',icon:'🔍',label:'有效房源'},
+    {key:'eval',icon:'🏠',label:'上门评估'},
+    {key:'sign',icon:'📝',label:'房东签约'},
+    {key:'reno',icon:'🛠',label:'改造中'},
+    {key:'show',icon:'👀',label:'集中看房'},
+    {key:'deal',icon:'💰',label:'成交'}
 ];
-const WORK_GOAL=10; // 每日目标:接触+看房合计 10
+const STAGE_OPTS=WORK_ITEMS.filter(i=>i.key!=='agent');
+const WORK_GOAL=10; // 每日管道动作目标
 
 function getDayDataFull(s){
     const dd=getDayData(s);
     if(!dd.habits)dd.habits={};
-    if(!dd.work)dd.work={agent:0,consult:0,viewing:0,follow:0};
+    if(!dd.work)dd.work={agent:0,lead:0,eval:0,sign:0,reno:0,show:0,deal:0};
     return dd;
 }
 
@@ -743,31 +827,113 @@ function updateHabitProgress(){
 
 function renderWork(){
     const dd=getDayDataFull(currentDate);
-    const grid=document.getElementById('work-grid');
+    const grid=document.getElementById('pipeline');
     grid.innerHTML='';
     WORK_ITEMS.forEach(item=>{
         const val=dd.work[item.key]||0;
         const div=document.createElement('div');
-        div.className='work-item';
-        div.innerHTML=`<div class="work-item-label"><span class="w-icon">${item.icon}</span>${item.label}</div><div class="work-counter"><button class="w-minus" data-key="${item.key}">−</button><span class="count">${val}</span><button class="w-plus" data-key="${item.key}">+</button></div>`;
-        div.querySelector('.w-plus').addEventListener('click',()=>{
-            dd.work[item.key]=(dd.work[item.key]||0)+1;saveData(state);renderWork();
-        });
-        div.querySelector('.w-minus').addEventListener('click',()=>{
-            dd.work[item.key]=Math.max(0,(dd.work[item.key]||0)-1);saveData(state);renderWork();
-        });
+        div.className='pipe-stage';
+        div.innerHTML=`<div class="pipe-top"><button class="pipe-minus" data-key="${item.key}">−</button><span class="pipe-count">${val}</span><button class="pipe-plus" data-key="${item.key}">+</button></div><div class="pipe-label">${item.icon} ${item.label}</div>`;
+        div.querySelector('.pipe-plus').addEventListener('click',()=>{dd.work[item.key]=(dd.work[item.key]||0)+1;saveData(state);renderWork();});
+        div.querySelector('.pipe-minus').addEventListener('click',()=>{dd.work[item.key]=Math.max(0,(dd.work[item.key]||0)-1);saveData(state);renderWork();});
         grid.appendChild(div);
     });
-    // 进度条
-    const total=dd.work.agent+dd.work.viewing; // 接触+看房
+    const total=WORK_ITEMS.reduce((s,it)=>s+(dd.work[it.key]||0),0);
     const pct=Math.min(100,Math.round(total/WORK_GOAL*100));
-    document.getElementById('work-summary').textContent=`${dd.work.agent||0} 接触 · ${dd.work.viewing||0} 看房`;
+    document.getElementById('work-summary').textContent=`建联 ${dd.work.agent||0} · 线索 ${dd.work.lead||0} · 签约 ${dd.work.sign||0} · 成交 ${dd.work.deal||0}`;
     document.getElementById('work-goal-text').textContent=`${total}/${WORK_GOAL}`;
     document.getElementById('work-progress-fill').style.width=pct+'%';
+    renderWorkAlerts();
 }
 
-function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTrends();renderReview();renderMoney();updateProgress();renderHabits();renderWork()}
+// 今日卡点：从房源管道自动揪出该推进的
+function renderWorkAlerts(){
+    const box=document.getElementById('work-alerts');
+    const hs=state.houses||[];
+    const alerts=[];
+    const cnt=k=>hs.filter(h=>h.stage===k).length;
+    if(cnt('sign')>0)alerts.push({t:`${cnt('sign')} 套已签约，尽快开工改造`,c:'warn'});
+    if(cnt('reno')>0)alerts.push({t:`${cnt('reno')} 套改造中，完工后约中介集中看房`,c:''});
+    if(cnt('show')>0)alerts.push({t:`${cnt('show')} 套集中看房中，盯紧成交`,c:''});
+    const due=hs.filter(h=>h.sign&&daysBetween(h.sign,todayStr())>=150).length;
+    if(due>0)alerts.push({t:`${due} 套合同剩 ≤30 天，硬装转送房东前先冲看房！`,c:'danger'});
+    box.innerHTML=alerts.length?alerts.map(a=>`<div class="alert-item ${a.c}">⚡ ${a.t}</div>`).join(''):`<div class="alert-empty">管道顺畅 · 今天继续推房源 💪</div>`;
+}
+
+// 房源管道
+function renderHouses(){
+    const list=document.getElementById('house-list');
+    const hs=state.houses||[];
+    document.getElementById('house-count').textContent=`${hs.length} 套在管`;
+    list.innerHTML='';
+    if(!hs.length){list.innerHTML=`<div class="alert-empty">还没有房源，点下面"添加房源"录入第一套滞销房 🏠</div>`;return;}
+    hs.forEach(h=>{
+        const card=document.createElement('div');
+        card.className='house-card';
+        const tags=[`${h.age||'?'}年房龄`,(h.elevator?'带电梯':'无电梯'),`挂${h.listed||'?'}月`].map(t=>`<span class="house-tag">${t}</span>`).join('');
+        const timer=h.sign?timerHtml(h.sign):'';
+        card.innerHTML=`
+            <div class="house-head"><span class="house-name">🏠 ${escapeHtml(h.name||'未命名房源')}</span><button class="house-del" data-id="${h.id}">✕</button></div>
+            <div class="house-tags">${tags}</div>
+            <div class="house-meta">房东底价 <b>${h.price||'?'}万</b> · 改造预算 <b>${h.budget||'?'}万</b> · 报源中介 <b>${escapeHtml(h.agent||'—')}</b></div>
+            <div class="house-foot"><div class="house-stage-wrap">阶段 <select class="house-stage-select" data-id="${h.id}">${STAGE_OPTS.map(o=>`<option value="${o.key}" ${o.key===h.stage?'selected':''}>${o.label}</option>`).join('')}</select></div>${timer}</div>
+            ${h.next?`<div class="house-next">➡️ 下一步：${escapeHtml(h.next)}</div>`:''}`;
+        card.querySelector('.house-del').addEventListener('click',()=>{
+            if(confirm('删除这套房源记录？')){state.houses=state.houses.filter(x=>x.id!==h.id);saveData(state);renderHouses();renderWorkAlerts();}
+        });
+        card.querySelector('.house-stage-select').addEventListener('change',e=>{h.stage=e.target.value;saveData(state);renderHouses();renderWorkAlerts();});
+        list.appendChild(card);
+    });
+}
+
+function timerHtml(sign){
+    const left=180-daysBetween(sign,todayStr());
+    if(left<=0)return `<span class="house-timer danger">⏰ 已到期·硬装转送房东</span>`;
+    if(left<=30)return `<span class="house-timer danger">⏰ 剩 ${left} 天·冲看房</span>`;
+    if(left<=60)return `<span class="house-timer warn">⏰ 剩 ${left} 天</span>`;
+    return `<span class="house-timer ok">⏰ 剩 ${left} 天</span>`;
+}
+function daysBetween(s1,s2){return Math.round((strToDate(s2)-strToDate(s1))/86400000)}
+
+// 房源表单
+function initHouseForm(){
+    const sel=document.getElementById('hf-stage');
+    sel.innerHTML=STAGE_OPTS.map(o=>`<option value="${o.key}">${o.label}</option>`).join('');
+    document.getElementById('add-house-btn').addEventListener('click',()=>{
+        ['hf-name','hf-agent','hf-age','hf-listed','hf-price','hf-budget','hf-sign','hf-next'].forEach(id=>document.getElementById(id).value='');
+        document.getElementById('hf-elevator').checked=true;sel.selectedIndex=0;
+        document.getElementById('house-form').style.display='block';
+        document.getElementById('add-house-btn').style.display='none';
+    });
+    document.getElementById('hf-cancel').addEventListener('click',()=>{
+        document.getElementById('house-form').style.display='none';
+        document.getElementById('add-house-btn').style.display='block';
+    });
+    document.getElementById('hf-save').addEventListener('click',()=>{
+        const name=document.getElementById('hf-name').value.trim();
+        if(!name){showToast('请填写小区名称');return;}
+        state.houses.push({
+            id:'h'+Date.now(),name,
+            agent:document.getElementById('hf-agent').value.trim(),
+            age:document.getElementById('hf-age').value,
+            listed:document.getElementById('hf-listed').value,
+            price:document.getElementById('hf-price').value,
+            budget:document.getElementById('hf-budget').value,
+            elevator:document.getElementById('hf-elevator').checked,
+            stage:document.getElementById('hf-stage').value,
+            sign:document.getElementById('hf-sign').value,
+            next:document.getElementById('hf-next').value.trim()
+        });
+        saveData(state);
+        document.getElementById('house-form').style.display='none';
+        document.getElementById('add-house-btn').style.display='block';
+        renderHouses();renderWorkAlerts();showToast('✓ 已保存房源');
+    });
+}
+
+function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTrends();renderReview();renderMoney();updateProgress();renderHabits();renderWork();renderHouses();renderWorkAlerts()}
 renderAll();
+initHouseForm();
 
 // ===== 添加任务 =====
 function addTask(key,inputId){const input=document.getElementById(inputId);const v=input.value.trim();if(!v)return;getDayData(currentDate)[key].push({id:key[0]+Date.now(),text:v,done:false});saveData(state);input.value='';renderAll()}
@@ -887,7 +1053,7 @@ function renderMonthSummary(){
     const [yy,mm]=ym.split('-');
     let tasks=0,done=0,ideas=0,trends=0,min=0,mout=0,activeDays=0;
     let habitTotal=0,habitDays=0,maxIncome=0,maxExpense=0;
-    const habitCount={},workSum={agent:0,consult:0,viewing:0,follow:0},workGoalDays=0;
+    const habitCount={},workSum={agent:0,lead:0,eval:0,sign:0,reno:0,show:0,deal:0},workGoalDays=0;
     const activeDateSet=new Set();
     Object.entries(state.dates).forEach(([ds,dd])=>{
         if(!ds.startsWith(ym))return;
@@ -942,10 +1108,12 @@ function renderMonthSummary(){
     rep+=`</div>`;
     // 工作记录
     rep+=`<div class="ms-section"><div class="ms-section-title">💼 工作记录</div>`;
-    const ws=workSum.agent+workSum.consult+workSum.viewing+workSum.follow;
+    const ws=WORK_ITEMS.reduce((s,w)=>s+(workSum[w.key]||0),0);
     if(ws>0){
         WORK_ITEMS.forEach(w=>{rep+=`<div class="ms-row"><span>${w.icon} ${w.label}</span><b>${workSum[w.key]}</b></div>`});
         rep+=`<div class="ms-row"><span>🎯 达标天数（合计≥${WORK_GOAL}）</span><b>${workGoalDays} 天</b></div>`;
+        rep+=`<div class="ms-row"><span>🏠 在管房源</span><b>${state.houses?state.houses.length:0} 套</b></div>`;
+        rep+=`<div class="ms-row"><span>💰 本月成交房源</span><b>${state.houses?state.houses.filter(h=>h.stage==='deal').length:0} 套</b></div>`;
     }else{rep+=`<div class="ms-empty-tip">本月还没有工作记录 📋</div>`}
     rep+=`</div>`;
     // 学习计划
