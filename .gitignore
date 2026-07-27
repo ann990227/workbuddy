@@ -1,9 +1,0 @@
-.netlify/
-*.log
-CURRENT_URL.txt
-guard.sh
-workbuddy_single.html
-workbuddy_v2.html
-app.js
-style.css
-sw.js
