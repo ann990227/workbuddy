@@ -294,6 +294,32 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
 .ms-comment{margin-top:14px;padding:12px 14px;background:linear-gradient(135deg,#fff5f7,#ffe0ec);border-radius:12px;font-size:13px;line-height:1.8;color:var(--text)}
 .ms-comment b{color:var(--pink-deep)}
 .ms-empty-tip{font-size:12px;color:var(--muted);padding:4px 0}
+/* ===== 爆款追踪（内容数据追踪）===== */
+.trend-paste-area{width:100%;min-height:90px;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);resize:vertical;line-height:1.5}
+.trend-paste-area:focus{outline:none;border-color:var(--pink)}
+.trend-paste-row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.trend-plat-sel{padding:6px 10px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-size:12px;font-family:inherit;cursor:pointer;color:var(--muted)}
+.trend-plat-sel.active{background:var(--ins-grad);color:#fff;border-color:transparent}
+.trend-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.trend-stat{background:linear-gradient(135deg,#fff5f7,#ffe0ec);border-radius:10px;padding:10px 8px;text-align:center}
+.trend-stat .num{font-size:18px;font-weight:700;color:var(--pink-deep);line-height:1.2}
+.trend-stat .lbl{font-size:10px;color:var(--muted);margin-top:2px}
+.trend-record-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px;position:relative;overflow:hidden}
+.trend-record-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pink)}
+.trend-record-card.dy::before{background:#000}
+.trend-rc-head{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.trend-plat-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:#ff4081;color:#fff}
+.trend-plat-tag.dy{background:#000}
+.trend-rc-title{flex:1;font-size:13px;font-weight:600;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trend-rc-del{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 4px}
+.trend-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.trend-metric{text-align:center;background:rgba(255,224,236,.3);border-radius:8px;padding:6px 4px}
+.trend-metric .v{font-size:14px;font-weight:700;color:var(--pink-deep);line-height:1.2}
+.trend-metric .l{font-size:10px;color:var(--muted);margin-top:2px}
+.trend-rc-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.4}
+.trend-parse-result{margin-top:10px;padding:10px 12px;background:rgba(168,230,207,.15);border:1.5px solid #a8e6cf;border-radius:10px;font-size:13px;color:#2d6a4f;display:none}
+.trend-parse-result.show{display:block}
+.trend-parse-result.err{background:rgba(255,107,157,.1);border-color:var(--pink-light);color:var(--pink-deep)}
 </style>
 </head>
 <body>
@@ -425,11 +451,19 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
             </div>
             <div class="card">
                 <div class="card-header"><span id="trend-date-label"></span><span id="trend-count">0 条</span></div>
-                <ul id="trend-list" class="task-list"></ul>
-                <div class="add-box">
-                    <input id="new-trend-input" type="text" placeholder="输入热点,按回车添加">
-                    <button id="add-trend-btn">+ 添加</button>
+                <div id="trend-stats" class="trend-stats"></div>
+                <div id="trend-list"></div>
+                <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--pink-light)">
+                    <p style="font-size:12px;color:var(--muted);margin-bottom:8px">📋 从创作者后台复制内容数据，粘贴到下方，选平台后点解析</p>
+                    <textarea id="trend-paste-area" class="trend-paste-area" placeholder="例：&#10;笔记标题：常州中介兄弟...&#10;阅读 1,234  点赞 56  评论 12  转发 8&#10;&#10;或抖音：&#10;视频标题：常州老房翻新...&#10;播放 12,345  点赞 234  评论 45  转发 12"></textarea>
+                    <div class="trend-paste-row">
+                        <button class="trend-plat-sel active" data-plat="xhs">📕 小红书</button>
+                        <button class="trend-plat-sel" data-plat="dy">🎵 抖音</button>
+                        <button id="trend-parse-btn" style="margin-left:auto">🔍 解析并添加</button>
+                    </div>
+                    <div id="trend-parse-result" class="trend-parse-result"></div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -563,10 +597,10 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
 const STORE_KEY='workbuddy_v4';
 const PRESET={
     inspiration:['【日常vlog】"东北女孩的一天"——早上普拉提+练琴+录英语','【变装系列】"素颜到精致妆容"15秒变装,卡点音乐用近期热歌','【穿搭分享】"160小个子秋冬穿搭"——显高显瘦的5套搭配公式','【搞笑剧情】"当东北妈催婚"系列续集','【好物分享】提升幸福感的小物件'],
-    trends:['抖音热点:#秋冬穿搭大赛 播放量12.4亿','抖音热点:#东北女孩 播放量8.7亿','爆款视频:@某博主"15秒变装" 点赞287万','爆款音乐:《XX》卡点BGM 使用量89万'],
-    review:[{title:'【穿搭分享】160小个子显高穿搭公式',note:'播放:52.3万  点赞:1.2万  完播率:45%\n\n亮点:标题数字吸引眼球\n不足:前3秒节奏慢\n下次优化:前3秒直接上穿搭效果对比'},{title:'【搞笑剧情】当东北妈催婚',note:'播放:128万  点赞:4.7万  完播率:61%\n\n亮点:剧情冲突强,评论爆了\n不足:结尾仓促\n下次优化:结尾加反转钩子'}]
+    trends:[{platform:'xhs',title:'常州中介兄弟,你手里挂了一年卖不动的房子',views:3450,likes:128,comments:23,shares:15},{platform:'dy',title:'常州10年以上电梯房,为什么中介推不动',views:8900,likes:234,comments:45,shares:28}],
+    review:[{title:'【中介合作】常州中介兄弟你手里挂了一年卖不动的房子',note:'阅读:3450  点赞:128  评论:23  转发:15\n\n亮点:标题直击中介痛点,评论区有中介主动私信\n不足:封面图不够吸睛\n下次优化:封面用前后对比图,前3秒抛出数据'}]
 };
-function loadData(){try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON.parse(r)}catch(e){}const t=todayStr();const init={dates:{},review:[]};init.dates[t]={daily:[],inspiration:PRESET.inspiration.map((s,i)=>({id:'i'+Date.now()+i,text:s,done:false})),trends:PRESET.trends.map((s,i)=>({id:'t'+Date.now()+i,text:s,done:false})),money:[]};init.review=PRESET.review.map((s,i)=>({id:'r'+Date.now()+i,...s}));saveData(init);return init}
+function loadData(){try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON.parse(r)}catch(e){}const t=todayStr();const init={dates:{},review:[]};init.dates[t]={daily:[],inspiration:PRESET.inspiration.map((s,i)=>({id:'i'+Date.now()+i,text:s,done:false})),trends:PRESET.trends.map((s,i)=>({id:'t'+Date.now()+i,postedAt:t,recordedAt:Date.now(),...s})),money:[]};init.review=PRESET.review.map((s,i)=>({id:'r'+Date.now()+i,...s}));saveData(init);return init}
 function saveData(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
 let state=loadData();
 
@@ -647,7 +681,7 @@ function renderMoney(){const dd=getDayData(currentDate);const list=document.getE
 document.getElementById('add-money-btn').addEventListener('click',()=>{const cat=document.getElementById('money-category').value;const amt=parseFloat(document.getElementById('money-amount').value);const note=document.getElementById('money-note').value.trim();if(!amt||amt<=0){alert('请输入有效金额');return}getDayData(currentDate).money.push({id:'m'+Date.now(),type:moneyType,category:cat,amount:amt,note:note});saveData(state);document.getElementById('money-amount').value='';document.getElementById('money-note').value='';renderMoney()});
 
 // ===== 日历 =====
-function renderCalendar(){const y=calMonth.getFullYear(),m=calMonth.getMonth();document.getElementById('cal-month-label').textContent=`${y}年${m+1}月`;const grid=document.getElementById('cal-grid');grid.innerHTML='';const fd=new Date(y,m,1),sw=fd.getDay(),dim=new Date(y,m+1,0).getDate(),pdim=new Date(y,m,0).getDate();for(let i=sw-1;i>=0;i--){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=pdim-i;grid.appendChild(d)}for(let day=1;day<=dim;day++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;const d=document.createElement('div');d.className='cal-day';d.textContent=day;if(ds===todayStr())d.classList.add('today');if(ds===currentDate)d.classList.add('selected');const dd=state.dates[ds];const dots=document.createElement('div');dots.className='dots';if(dd&&(dd.daily.length||dd.inspiration.length||dd.trends.length))dots.innerHTML+='<span class="d-task"></span>';if(dd&&dd.inspiration.length)dots.innerHTML+='<span class="d-idea"></span>';if(dd&&dd.money.length)dots.innerHTML+='<span class="d-money"></span>';if(dots.children.length)d.appendChild(dots);d.addEventListener('click',()=>{currentDate=ds;renderAll();switchPage('daily')});grid.appendChild(d)}const fill=Math.max(0,42-grid.children.length);for(let i=1;i<=fill;i++){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=i;grid.appendChild(d)}const dd=state.dates[currentDate];const detail=document.getElementById('cal-day-detail');const content=document.getElementById('cal-detail-content');document.getElementById('cal-detail-date').textContent=fmtDateDisplay(currentDate);if(dd&&(dd.daily.length||dd.inspiration.length||dd.trends.length||dd.money.length)){detail.style.display='block';let h='';if(dd.daily.length)h+=`<p style="margin-bottom:6px"><strong>📋 任务 ${dd.daily.filter(t=>t.done).length}/${dd.daily.length}</strong></p>`;if(dd.inspiration.length)h+=`<p style="margin-bottom:6px"><strong>💡 灵感 ${dd.inspiration.length} 条</strong></p>`;if(dd.trends.length)h+=`<p style="margin-bottom:6px"><strong>📌 爆款 ${dd.trends.length} 条</strong></p>`;if(dd.money.length){const i=dd.money.filter(m=>m.type==='income').reduce((s,m)=>s+m.amount,0);const o=dd.money.filter(m=>m.type==='expense').reduce((s,m)=>s+m.amount,0);h+=`<p><strong>💰 收支</strong>:收入 ¥${i.toFixed(2)} / 支出 ¥${o.toFixed(2)}</p>`}content.innerHTML=h}else{detail.style.display='block';content.innerHTML='<p style="color:#8e8e8e;font-size:13px">这天没有记录</p>'}}
+function renderCalendar(){const y=calMonth.getFullYear(),m=calMonth.getMonth();document.getElementById('cal-month-label').textContent=`${y}年${m+1}月`;const grid=document.getElementById('cal-grid');grid.innerHTML='';const fd=new Date(y,m,1),sw=fd.getDay(),dim=new Date(y,m+1,0).getDate(),pdim=new Date(y,m,0).getDate();for(let i=sw-1;i>=0;i--){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=pdim-i;grid.appendChild(d)}for(let day=1;day<=dim;day++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;const d=document.createElement('div');d.className='cal-day';d.textContent=day;if(ds===todayStr())d.classList.add('today');if(ds===currentDate)d.classList.add('selected');const dd=state.dates[ds];const dots=document.createElement('div');dots.className='dots';if(dd&&(dd.daily.length||dd.inspiration.length||dd.trends.length))dots.innerHTML+='<span class="d-task"></span>';if(dd&&dd.inspiration.length)dots.innerHTML+='<span class="d-idea"></span>';if(dd&&dd.money.length)dots.innerHTML+='<span class="d-money"></span>';if(dots.children.length)d.appendChild(dots);d.addEventListener('click',()=>{currentDate=ds;renderAll();switchPage('daily')});grid.appendChild(d)}const fill=Math.max(0,42-grid.children.length);for(let i=1;i<=fill;i++){const d=document.createElement('div');d.className='cal-day other-month';d.textContent=i;grid.appendChild(d)}const dd=state.dates[currentDate];const detail=document.getElementById('cal-day-detail');const content=document.getElementById('cal-detail-content');document.getElementById('cal-detail-date').textContent=fmtDateDisplay(currentDate);if(dd&&(dd.daily.length||dd.inspiration.length||dd.trends.length||dd.money.length)){detail.style.display='block';let h='';if(dd.daily.length)h+=`<p style="margin-bottom:6px"><strong>📋 任务 ${dd.daily.filter(t=>t.done).length}/${dd.daily.length}</strong></p>`;if(dd.inspiration.length)h+=`<p style="margin-bottom:6px"><strong>💡 灵感 ${dd.inspiration.length} 条</strong></p>`;if(dd.trends.length)h+=`<p style="margin-bottom:6px"><strong>📌 内容 ${dd.trends.length} 条</strong></p>`;if(dd.money.length){const i=dd.money.filter(m=>m.type==='income').reduce((s,m)=>s+m.amount,0);const o=dd.money.filter(m=>m.type==='expense').reduce((s,m)=>s+m.amount,0);h+=`<p><strong>💰 收支</strong>:收入 ¥${i.toFixed(2)} / 支出 ¥${o.toFixed(2)}</p>`}content.innerHTML=h}else{detail.style.display='block';content.innerHTML='<p style="color:#8e8e8e;font-size:13px">这天没有记录</p>'}}
 document.getElementById('cal-prev').addEventListener('click',()=>{calMonth.setMonth(calMonth.getMonth()-1);renderCalendar()});
 document.getElementById('cal-next').addEventListener('click',()=>{calMonth.setMonth(calMonth.getMonth()+1);renderCalendar()});
 
@@ -732,16 +766,112 @@ function renderWork(){
     document.getElementById('work-progress-fill').style.width=pct+'%';
 }
 
-function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTasks('trend-list',dd.trends,'trends');renderReview();renderMoney();updateProgress();renderHabits();renderWork()}
+function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTrends();renderReview();renderMoney();updateProgress();renderHabits();renderWork()}
 renderAll();
 
 // ===== 添加任务 =====
 function addTask(key,inputId){const input=document.getElementById(inputId);const v=input.value.trim();if(!v)return;getDayData(currentDate)[key].push({id:key[0]+Date.now(),text:v,done:false});saveData(state);input.value='';renderAll()}
 document.getElementById('add-task-btn').addEventListener('click',()=>addTask('daily','new-task-input'));
 document.getElementById('add-idea-btn').addEventListener('click',()=>addTask('inspiration','new-idea-input'));
-document.getElementById('add-trend-btn').addEventListener('click',()=>addTask('trends','new-trend-input'));
-[['new-task-input','daily'],['new-idea-input','inspiration'],['new-trend-input','trends']].forEach(([id,key])=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addTask(key,id)}));
+[['new-task-input','daily'],['new-idea-input','inspiration']].forEach(([id,key])=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addTask(key,id)}));
 document.getElementById('add-review-btn').addEventListener('click',()=>{const t=document.getElementById('review-title').value.trim(),n=document.getElementById('review-note').value.trim();if(!t){alert('请填写标题');return}state.review.push({id:'r'+Date.now(),title:t,note:n,date:currentDate});saveData(state);document.getElementById('review-title').value='';document.getElementById('review-note').value='';renderReview()});
+
+// ===== 爆款追踪（内容数据追踪）=====
+let trendPlat='xhs';
+function parseNum(s){if(!s)return 0;s=String(s).replace(/[,\s]/g,'');const m=s.match(/^([\d.]+)\s*万$/i);if(m)return Math.round(parseFloat(m[1])*10000);const k=s.match(/^([\d.]+)\s*k$/i);if(k)return Math.round(parseFloat(k[1])*1000);const n=parseInt(s);return isNaN(n)?0:n}
+function formatNum(n){if(n>=10000)return(n/10000).toFixed(1)+'万';return n.toLocaleString()}
+function parseTrendData(text,plat){
+    text=text.trim();if(!text)return{err:'请粘贴内容数据'};
+    const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
+    let title='',views=0,likes=0,comments=0,shares=0;
+    const allNums=[];
+    lines.forEach(l=>{
+        const tm=l.match(/^(?:笔记标题|视频标题|标题)\s*[:：]?\s*(.+)/i);
+        if(tm&&!title)title=tm[1].trim();
+        const m=l.match(/(阅读|播放|浏览|阅读量|播放量)\s*[:：]?\s*([\d,.]+万?k?)/i);
+        if(m)views=parseNum(m[2]);
+        const lk=l.match(/点赞\s*[:：]?\s*([\d,.]+万?k?)/i);
+        if(lk)likes=parseNum(lk[1]);
+        const cm=l.match(/评论\s*[:：]?\s*([\d,.]+万?k?)/i);
+        if(cm)comments=parseNum(cm[1]);
+        const sh=l.match(/(?:转发|分享)\s*[:：]?\s*([\d,.]+万?k?)/i);
+        if(sh)shares=parseNum(sh[1]);
+        const nums=l.match(/[\d,.]+万?k?/g);if(nums)nums.forEach(n=>allNums.push(parseNum(n)));
+    });
+    if(!title&&lines.length>0)title=lines[0].replace(/^(笔记标题|视频标题|标题)\s*[:：]?\s*/i,'').slice(0,40);
+    if(!views&&allNums.length>=4){views=allNums[0];likes=allNums[1];comments=allNums[2];shares=allNums[3]}
+    if(!title&&!views&&!likes)return{err:'未能解析出数据，请检查粘贴格式'};
+    return{platform:plat,title:title||'未命名内容',views,likes,comments,shares};
+}
+function renderTrends(){
+    const dd=getDayData(currentDate);
+    const list=document.getElementById('trend-list');
+    const cnt=document.getElementById('trend-count');
+    list.innerHTML='';
+    let valid=dd.trends.filter(t=>!t.text);
+    let old=dd.trends.filter(t=>t.text);
+    if(old.length){old.forEach(t=>{t.platform='xhs';t.title=t.text;t.views=0;t.likes=0;t.comments=0;t.shares=0;delete t.text;delete t.done});valid=valid.concat(old);dd.trends=valid;saveData(state)}
+    cnt.textContent=valid.length+' 条';
+    if(valid.length===0){list.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px 0;font-size:13px">还没有内容数据，粘贴到下方添加 ✨</p>';renderTrendStats();return}
+    valid.slice().reverse().forEach(t=>{
+        const card=document.createElement('div');
+        card.className='trend-record-card'+(t.platform==='dy'?' dy':'');
+        card.innerHTML=`
+            <div class="trend-rc-head">
+                <span class="trend-plat-tag${t.platform==='dy'?' dy':''}">${t.platform==='dy'?'🎵 抖音':'📕 小红书'}</span>
+                <span class="trend-rc-title">${escapeHtml(t.title||'未命名')}</span>
+                <button class="trend-rc-del" data-id="${t.id}">×</button>
+            </div>
+            <div class="trend-metrics">
+                <div class="trend-metric"><div class="v">${formatNum(t.views||0)}</div><div class="l">${t.platform==='dy'?'播放':'阅读'}</div></div>
+                <div class="trend-metric"><div class="v">${formatNum(t.likes||0)}</div><div class="l">点赞</div></div>
+                <div class="trend-metric"><div class="v">${formatNum(t.comments||0)}</div><div class="l">评论</div></div>
+                <div class="trend-metric"><div class="v">${formatNum(t.shares||0)}</div><div class="l">转发</div></div>
+            </div>
+        `;
+        card.querySelector('.trend-rc-del').addEventListener('click',e=>{
+            e.stopPropagation();
+            dd.trends=dd.trends.filter(x=>x.id!==t.id);
+            saveData(state);renderTrends();showToast('已删除');
+        });
+        list.appendChild(card);
+    });
+    renderTrendStats();
+}
+function renderTrendStats(){
+    const dd=getDayData(currentDate);
+    const ts=dd.trends.filter(t=>!t.text);
+    if(ts.length===0){document.getElementById('trend-stats').innerHTML='';return}
+    const tv=ts.reduce((s,t)=>s+(t.views||0),0);
+    const tl=ts.reduce((s,t)=>s+(t.likes||0),0);
+    const tc=ts.reduce((s,t)=>s+(t.comments||0),0);
+    const ir=tv>0?((tl+tc)/tv*100).toFixed(1):0;
+    document.getElementById('trend-stats').innerHTML=`
+        <div class="trend-stat"><div class="num">${ts.length}</div><div class="lbl">本日内容</div></div>
+        <div class="trend-stat"><div class="num">${formatNum(tv)}</div><div class="lbl">总阅读/播放</div></div>
+        <div class="trend-stat"><div class="num">${formatNum(tl)}</div><div class="lbl">总点赞</div></div>
+        <div class="trend-stat"><div class="num">${ir}%</div><div class="lbl">互动率</div></div>
+    `;
+}
+document.querySelectorAll('.trend-plat-sel').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        document.querySelectorAll('.trend-plat-sel').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');trendPlat=btn.dataset.plat;
+    });
+});
+document.getElementById('trend-parse-btn').addEventListener('click',()=>{
+    const text=document.getElementById('trend-paste-area').value;
+    const res=document.getElementById('trend-parse-result');
+    const r=parseTrendData(text,trendPlat);
+    if(r.err){res.className='trend-parse-result show err';res.innerHTML='⚠ '+r.err;return}
+    const dd=getDayData(currentDate);
+    dd.trends.push({id:'t'+Date.now(),platform:r.platform,title:r.title,views:r.views,likes:r.likes,comments:r.comments,shares:r.shares,postedAt:currentDate,recordedAt:Date.now()});
+    saveData(state);
+    document.getElementById('trend-paste-area').value='';
+    res.className='trend-parse-result show';
+    res.innerHTML=`✓ 已添加：${r.platform==='dy'?'抖音':'小红书'}《${r.title}》<br>阅读/播放 ${formatNum(r.views)} · 点赞 ${formatNum(r.likes)} · 评论 ${formatNum(r.comments)} · 转发 ${formatNum(r.shares)}`;
+    renderTrends();showToast('✓ 已添加');
+});
 
 // ===== 每月总结 =====
 let summaryMonth=todayStr().slice(0,7);
