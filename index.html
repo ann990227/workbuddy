@@ -381,7 +381,6 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
             <button class="nav-item" data-page="daily"><span class="icon">☀</span><span>每日计划</span></button>
             <button class="nav-item" data-page="inspiration"><span class="icon">💡</span><span>选题灵感</span></button>
             <button class="nav-item" data-page="trends"><span class="icon">📌</span><span>爆款追踪</span></button>
-            <button class="nav-item" data-page="review"><span class="icon">📊</span><span>内容复盘</span></button>
             <button class="nav-item" data-page="study"><span class="icon">🎓</span><span>学习计划</span></button>
             <button class="nav-item" data-page="calendar"><span class="icon">📅</span><span>日历</span></button>
             <button class="nav-item" data-page="money"><span class="icon">💰</span><span>记账</span></button>
@@ -546,21 +545,6 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
             </div>
         </section>
 
-        <!-- 内容复盘 -->
-        <section id="review" class="page">
-            <h1>📊 内容复盘</h1>
-            <p class="sub">每次发完内容后,记录数据和优化方向。</p>
-            <div class="card">
-                <div class="card-header"><span>复盘记录</span></div>
-                <div id="review-list" class="review-list"></div>
-                <div class="review-form">
-                    <input id="review-title" type="text" placeholder="内容标题">
-                    <textarea id="review-note" rows="3" placeholder="数据 / 亮点 / 下次优化点"></textarea>
-                    <button id="add-review-btn">+ 添加复盘</button>
-                </div>
-            </div>
-        </section>
-
         <!-- 学习计划 -->
         <section id="study" class="page">
             <h1>🎓 学习计划</h1>
@@ -656,7 +640,6 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
                 <div class="money-summary" style="gap:8px">
                     <div class="money-card income" style="flex:1"><div class="label">收入</div><div class="amount" id="ms-in">¥0</div></div>
                     <div class="money-card expense" style="flex:1"><div class="label">支出</div><div class="amount" id="ms-out">¥0</div></div>
-                    <div class="money-card balance" style="flex:1"><div class="label">复盘</div><div class="amount" id="ms-review">0</div></div>
                 </div>
                 <div id="ms-detail" style="margin-top:12px;font-size:13px;color:var(--text);line-height:1.9"></div>
                 <div id="ms-report"></div>
@@ -677,7 +660,7 @@ const STORE_KEY='workbuddy_v4';
 const PRESET={
     inspiration:['【日常vlog】"东北女孩的一天"——早上普拉提+练琴+录英语','【变装系列】"素颜到精致妆容"15秒变装,卡点音乐用近期热歌','【穿搭分享】"160小个子秋冬穿搭"——显高显瘦的5套搭配公式','【搞笑剧情】"当东北妈催婚"系列续集','【好物分享】提升幸福感的小物件'],
     trends:[{platform:'xhs',title:'常州中介兄弟,你手里挂了一年卖不动的房子',views:3450,likes:128,comments:23,shares:15},{platform:'dy',title:'常州10年以上电梯房,为什么中介推不动',views:8900,likes:234,comments:45,shares:28}],
-    review:[{title:'【中介合作】常州中介兄弟你手里挂了一年卖不动的房子',note:'阅读:3450  点赞:128  评论:23  转发:15\n\n亮点:标题直击中介痛点,评论区有中介主动私信\n不足:封面图不够吸睛\n下次优化:封面用前后对比图,前3秒抛出数据'}]
+    review:[]
 };
 function loadData(){try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON.parse(r)}catch(e){}const t=todayStr();const init={dates:{},review:[]};init.dates[t]={daily:[],inspiration:PRESET.inspiration.map((s,i)=>({id:'i'+Date.now()+i,text:s,done:false})),trends:PRESET.trends.map((s,i)=>({id:'t'+Date.now()+i,postedAt:t,recordedAt:Date.now(),...s})),money:[]};init.review=PRESET.review.map((s,i)=>({id:'r'+Date.now()+i,...s}));saveData(init);return init}
 function saveData(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
@@ -940,7 +923,6 @@ function addTask(key,inputId){const input=document.getElementById(inputId);const
 document.getElementById('add-task-btn').addEventListener('click',()=>addTask('daily','new-task-input'));
 document.getElementById('add-idea-btn').addEventListener('click',()=>addTask('inspiration','new-idea-input'));
 [['new-task-input','daily'],['new-idea-input','inspiration']].forEach(([id,key])=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addTask(key,id)}));
-document.getElementById('add-review-btn').addEventListener('click',()=>{const t=document.getElementById('review-title').value.trim(),n=document.getElementById('review-note').value.trim();if(!t){alert('请填写标题');return}state.review.push({id:'r'+Date.now(),title:t,note:n,date:currentDate});saveData(state);document.getElementById('review-title').value='';document.getElementById('review-note').value='';renderReview()});
 
 // ===== 爆款追踪（内容数据追踪）=====
 let trendPlat='xhs';
@@ -1087,7 +1069,6 @@ function renderMonthSummary(){
     document.getElementById('ms-trends').textContent=trends;
     document.getElementById('ms-in').textContent='¥'+min.toFixed(2);
     document.getElementById('ms-out').textContent='¥'+mout.toFixed(2);
-    document.getElementById('ms-review').textContent=reviewThisMonth;
 
     // 概览小结
     let detail=`<b>本月活跃 ${activeDays} 天</b> · 任务完成率 <b>${taskRate}%</b> · 习惯打卡 ${habitDays} 天 · 结余 <b style="color:var(--pink-deep)">¥${bal.toFixed(2)}</b>`;
