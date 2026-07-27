@@ -367,6 +367,41 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
 .trend-parse-result{margin-top:10px;padding:10px 12px;background:rgba(168,230,207,.15);border:1.5px solid #a8e6cf;border-radius:10px;font-size:13px;color:#2d6a4f;display:none}
 .trend-parse-result.show{display:block}
 .trend-parse-result.err{background:rgba(255,107,157,.1);border-color:var(--pink-light);color:var(--pink-deep)}
+
+/* ===== 选题模块增强 ===== */
+.track-lock-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,#fff5f7,#ffe0ec);border-radius:12px}
+.track-lock-row .lock-label{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.switch{position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;cursor:pointer;inset:0;background:var(--pink-light);border-radius:24px;transition:.2s}
+.switch .slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.switch input:checked+.slider{background:var(--ins-grad)}
+.switch input:checked+.slider::before{transform:translateX(18px)}
+.track-chips{display:flex;gap:6px;flex-wrap:wrap}
+.track-chip{padding:5px 12px;border:1.5px solid var(--pink-light);border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .15s}
+.track-chip.on{background:var(--ins-grad);color:#fff;border-color:transparent;font-weight:600}
+.daily-gen-btn{width:100%;border:none;background:var(--ins-grad);color:#fff;font-size:14px;font-weight:600;padding:12px;border-radius:14px;cursor:pointer;font-family:inherit;margin:4px 0 14px;box-shadow:0 4px 12px rgba(255,107,157,.3);transition:all .15s}
+.daily-gen-btn:hover{opacity:.92}
+.daily-gen-btn:active{transform:scale(.99)}
+.daily-idea-list{display:flex;flex-direction:column;gap:10px}
+.daily-idea-list:empty::before{content:"点上方按钮,按锁定赛道生成今日 4 条落地选题 👆";color:var(--muted);font-size:13px;text-align:center;padding:14px 0;display:block}
+.daily-idea-card{background:rgba(255,255,255,.9);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.daily-idea-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.daily-form-tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--ins-grad);color:#fff;flex-shrink:0}
+.daily-idea-title{font-size:14px;font-weight:600;line-height:1.4;flex:1}
+.daily-idea-kw{display:inline-block;font-size:12px;color:var(--pink-deep);background:var(--pink-soft);padding:2px 8px;border-radius:6px;margin-bottom:8px}
+.daily-idea-hook{font-size:12px;color:var(--text);line-height:1.6;background:#fffafc;padding:8px 10px;border-radius:8px;border-left:3px solid var(--pink);margin-bottom:10px}
+.script-box{margin-top:10px;padding:12px 14px;background:#fffafc;border:1px dashed var(--pink-light);border-radius:10px;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;display:none}
+.script-box.show{display:block}
+.idea-topic-card.used,.daily-idea-card.used{opacity:.55;filter:grayscale(.4)}
+.used-badge{font-size:10px;font-weight:600;color:#fff;background:#9e9e9e;padding:2px 8px;border-radius:10px;margin-left:6px}
+.idea-cat-tab.locked-off{opacity:.4;pointer-events:none;text-decoration:line-through}
+.house-promote-btn{margin-top:8px;width:100%;border:1.5px solid var(--pink-light);background:#fff;color:var(--pink-deep);font-size:12px;font-weight:600;padding:8px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s}
+.house-promote-btn:hover{background:var(--pink-soft);border-color:var(--pink)}
+.backup-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:10px 14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.backup-bar .bk-label{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.backup-bar .bk-spacer{flex:1}
+.backup-bar .btn{padding:6px 12px;font-size:12px}
 </style>
 </head>
 <body>
@@ -396,6 +431,13 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
         <section id="hot" class="page active">
             <h1>🔥 实时热点</h1>
             <p class="sub">抖音 / 小红书 / 微博 实时热搜榜单,一键存为灵感</p>
+            <div class="backup-bar">
+                <span class="bk-label">🛡 数据安全</span>
+                <span class="bk-spacer"></span>
+                <button class="btn" id="export-btn-home">⬇ 导出备份</button>
+                <button class="btn" id="import-btn-home">⬆ 导入备份</button>
+                <input type="file" id="backup-input-home" accept=".json" style="display:none">
+            </div>
             <div class="hot-tabs">
                 <button class="hot-tab active" data-plat="douyin">🎵 抖音热搜</button>
                 <button class="hot-tab" data-plat="xhs">📕 小红书热搜</button>
@@ -496,12 +538,23 @@ h1{font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;backgro
             <!-- AI 精选选题 -->
             <div class="card">
                 <div class="card-header"><span>🤖 AI 精选选题</span><span style="font-size:12px;color:var(--muted)">基于业务模式·12条</span></div>
-                <div class="hot-tabs" style="margin-bottom:16px">
+                <div class="track-lock-row">
+                    <label class="switch"><input type="checkbox" id="track-lock"><span class="slider"></span></label>
+                    <span class="lock-label">🔒 业务赛道锁定</span>
+                    <div class="track-chips" id="track-chips">
+                        <button class="track-chip on" data-track="agent">🤝 中介</button>
+                        <button class="track-chip on" data-track="owner">🏠 房东</button>
+                        <button class="track-chip on" data-track="buyer">🔑 买家</button>
+                    </div>
+                </div>
+                <div class="hot-tabs" style="margin-bottom:12px">
                     <button class="idea-cat-tab active" data-cat="agent">🤝 中介合作</button>
                     <button class="idea-cat-tab" data-cat="owner">🏠 房东委托</button>
                     <button class="idea-cat-tab" data-cat="buyer">🔑 买家种草</button>
                 </div>
                 <div id="idea-rec-list"></div>
+                <button class="daily-gen-btn" id="daily-gen-btn">🔄 每日一键生成（4条落地选题）</button>
+                <div id="daily-idea-list" class="daily-idea-list"></div>
             </div>
 
             <!-- 我的灵感 -->
@@ -666,6 +719,10 @@ function loadData(){try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON
 function saveData(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
 let state=loadData();
 if(!state.houses)state.houses=[];
+if(!state.usedTitles)state.usedTitles=[];
+if(!state.trackLock)state.trackLock={agent:true,owner:true,buyer:true};
+if(typeof state.trackLockOn==='undefined')state.trackLockOn=false;
+if(!state.dailyIdeas)state.dailyIdeas=[];
 
 function todayStr(){return dateToStr(new Date())}
 function dateToStr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -860,11 +917,13 @@ function renderHouses(){
             <div class="house-tags">${tags}</div>
             <div class="house-meta">房东底价 <b>${h.price||'?'}万</b> · 改造预算 <b>${h.budget||'?'}万</b> · 报源中介 <b>${escapeHtml(h.agent||'—')}</b></div>
             <div class="house-foot"><div class="house-stage-wrap">阶段 <select class="house-stage-select" data-id="${h.id}">${STAGE_OPTS.map(o=>`<option value="${o.key}" ${o.key===h.stage?'selected':''}>${o.label}</option>`).join('')}</select></div>${timer}</div>
-            ${h.next?`<div class="house-next">➡️ 下一步：${escapeHtml(h.next)}</div>`:''}`;
+            ${h.next?`<div class="house-next">➡️ 下一步：${escapeHtml(h.next)}</div>`:''}
+            <button class="house-promote-btn" data-id="${h.id}">📣 一键生成推广内容</button>`;
         card.querySelector('.house-del').addEventListener('click',()=>{
             if(confirm('删除这套房源记录？')){state.houses=state.houses.filter(x=>x.id!==h.id);saveData(state);renderHouses();renderWorkAlerts();}
         });
         card.querySelector('.house-stage-select').addEventListener('change',e=>{h.stage=e.target.value;saveData(state);renderHouses();renderWorkAlerts();});
+        card.querySelector('.house-promote-btn').addEventListener('click',()=>genHousePromo(h));
         list.appendChild(card);
     });
 }
@@ -914,7 +973,7 @@ function initHouseForm(){
     });
 }
 
-function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTrends();renderReview();renderMoney();updateProgress();renderHabits();renderWork();renderHouses();renderWorkAlerts()}
+function renderAll(){const dd=getDayData(currentDate);updateDateLabel();renderTasks('task-list',dd.daily,'daily');renderTasks('idea-list',dd.inspiration,'inspiration');renderTrends();if(document.getElementById('review-list'))renderReview();renderMoney();updateProgress();renderHabits();renderWork();renderHouses();renderWorkAlerts()}
 renderAll();
 initHouseForm();
 
@@ -1130,9 +1189,20 @@ function renderMonthSummary(){
 }
 
 // ===== 数据备份 =====
-document.getElementById('export-btn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`workbuddy_${todayStr()}.json`;a.click();URL.revokeObjectURL(url);showToast('✓ 已导出备份')});
+function doExport(){
+    const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`workbuddy_${todayStr()}.json`;a.click();URL.revokeObjectURL(url);showToast('✓ 已导出备份');
+}
+function doImport(f){
+    if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d&&d.dates){if(confirm('导入会覆盖当前所有数据,确定?')){state=d;saveData(state);location.reload()}}else alert('格式不正确')}catch(err){alert('解析失败:'+err.message)}};r.readAsText(f);
+}
+document.getElementById('export-btn').addEventListener('click',doExport);
 document.getElementById('import-btn').addEventListener('click',()=>document.getElementById('backup-input').click());
-document.getElementById('backup-input').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d&&d.dates){if(confirm('导入会覆盖当前所有数据,确定?')){state=d;saveData(state);location.reload()}}else alert('格式不正确')}catch(err){alert('解析失败:'+err.message)}};r.readAsText(f)});
+document.getElementById('backup-input').addEventListener('change',e=>doImport(e.target.files[0]));
+// 首页备份条
+document.getElementById('export-btn-home').addEventListener('click',doExport);
+document.getElementById('import-btn-home').addEventListener('click',()=>document.getElementById('backup-input-home').click());
+document.getElementById('backup-input-home').addEventListener('change',e=>doImport(e.target.files[0]));
 document.getElementById('clear-all').addEventListener('click',()=>{if(confirm('确定清空所有数据?不可撤销')){localStorage.removeItem(STORE_KEY);location.reload()}});
 
 // ===== 热点榜单 =====
@@ -1471,23 +1541,35 @@ const IDEA_TOPICS={
 function renderIdeaTopics(cat){
     const list=document.getElementById('idea-rec-list');
     list.innerHTML='';
+    if(state.trackLockOn && !state.trackLock[cat]){
+        const name=cat==='agent'?'中介合作':cat==='owner'?'房东委托':'买家种草';
+        list.innerHTML=`<div class="alert-empty">🔒 已锁定赛道，「${name}」未勾选已隐藏。去上方开关调整。</div>`;
+        return;
+    }
+    const catName=cat==='agent'?'中介合作':cat==='owner'?'房东委托':'买家种草';
     const topics=IDEA_TOPICS[cat]||[];
     topics.forEach((topic,i)=>{
+        const used=state.usedTitles.includes(topic.title);
         const card=document.createElement('div');
-        card.className='idea-topic-card';
+        card.className='idea-topic-card'+(used?' used':'');
         card.innerHTML=`
-            <div class="idea-topic-title">${escapeHtml(topic.title)}</div>
+            <div class="idea-topic-title">${escapeHtml(topic.title)}${used?'<span class="used-badge">✓ 已用</span>':''}</div>
             <span class="idea-topic-kw">🔍 ${escapeHtml(topic.kw)}</span>
             <ul class="idea-topic-points">${topic.points.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul>
             <div class="idea-topic-hook">📌 <strong>引流钩子:</strong> ${escapeHtml(topic.hook)}</div>
+            <div class="script-box"></div>
             <div class="idea-topic-actions">
                 <button class="topic-save" data-idx="${i}">💡 存入灵感</button>
                 <button class="topic-copy">📋 复制全文</button>
+                <button class="topic-script">🎬 生成脚本</button>
             </div>
         `;
         const saveBtn=card.querySelector('.topic-save');
         const copyBtn=card.querySelector('.topic-copy');
-        const fullText=`【${cat==='agent'?'中介合作':cat==='owner'?'房东委托':'买家种草'}选题】\n标题:${topic.title}\n关键词:${topic.kw}\n\n内容要点:\n${topic.points.map((p,j)=>`${j+1}. ${p}`).join('\n')}\n\n引流钩子:${topic.hook}`;
+        const scriptBtn=card.querySelector('.topic-script');
+        const scriptBox=card.querySelector('.script-box');
+        const fullText=`【${catName}选题】\n标题:${topic.title}\n关键词:${topic.kw}\n\n内容要点:\n${topic.points.map((p,j)=>`${j+1}. ${p}`).join('\n')}\n\n引流钩子:${topic.hook}`;
+        const scriptText=buildScript(catName,topic);
 
         saveBtn.addEventListener('click',()=>{
             const dd=getDayData(currentDate);
@@ -1495,6 +1577,9 @@ function renderIdeaTopics(cat){
             if(dd.inspiration.some(it=>it.text===text)){showToast('已存过了');return}
             dd.inspiration.push({id:'i'+Date.now(),text:text,done:false});
             saveData(state);
+            markUsed(topic.title);
+            card.classList.add('used');
+            if(!card.querySelector('.used-badge')){const b=document.createElement('span');b.className='used-badge';b.textContent='✓ 已用';card.querySelector('.idea-topic-title').appendChild(b);}
             saveBtn.classList.add('saved');saveBtn.textContent='✓ 已存';
             showToast('✓ 已存入灵感');
             renderTasks('idea-list',dd.inspiration,'inspiration');
@@ -1503,18 +1588,138 @@ function renderIdeaTopics(cat){
         copyBtn.addEventListener('click',()=>{
             navigator.clipboard.writeText(fullText).then(()=>showToast('✓ 已复制全文')).catch(()=>showToast('复制失败'));
         });
+        scriptBtn.addEventListener('click',()=>{
+            scriptBox.textContent=scriptText;
+            scriptBox.classList.toggle('show');
+            if(scriptBox.classList.contains('show')){
+                markUsed(topic.title);
+                card.classList.add('used');
+                if(!card.querySelector('.used-badge')){const b=document.createElement('span');b.className='used-badge';b.textContent='✓ 已用';card.querySelector('.idea-topic-title').appendChild(b);}
+                showToast('🎬 脚本已生成，可复制发布');
+            }
+        });
         list.appendChild(card);
     });
 }
 
+// ===== 选题增强：脚本生成 / 已用标记 / 赛道锁定 / 每日生成 =====
+function buildScript(catName,topic){
+    const pts=topic.points||[];
+    const p1=pts[0]||'',p2=pts[1]||'',p3=pts[2]||'';
+    const hookLine=topic.hook.replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/,'');
+    return `【30秒短视频脚本·${catName}】\n标题：${topic.title}\n\n⏱ 0-3秒 钩子开场：\n${hookLine}\n\n⏱ 3-15秒 讲清 3 个要点：\n1) ${p1}\n2) ${p2}\n3) ${p3}\n\n⏱ 15-25秒 信任背书/案例：\n用你手头真实房源或最新成交数据补一句，增强可信度。\n\n⏱ 25-30秒 行动号召(CTA)：\n${topic.hook}\n\n📌 发布建议：开头 3 秒用钩子原话口播，封面大字写「${topic.kw}」。`;
+}
+function markUsed(title){
+    if(!state.usedTitles.includes(title)){state.usedTitles.push(title);saveData(state);}
+}
+const SHOOT_FORMS=['口播干货','前后实拍对比','真实案例复盘','客户对话','踩盘vlog','避坑清单','数据说话'];
+function genDailyIdeas(){
+    const cats=['agent','owner','buyer'].filter(c=>!state.trackLockOn||state.trackLock[c]);
+    let pool=[];
+    cats.forEach(c=>(IDEA_TOPICS[c]||[]).forEach(t=>pool.push({cat:c,topic:t})));
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=pool[i];pool[i]=pool[j];pool[j]=t;}
+    const pick=pool.slice(0,Math.min(4,pool.length));
+    state.dailyIdeas=pick.map(p=>({cat:p.cat,title:p.topic.title,kw:p.topic.kw,hook:p.topic.hook,form:SHOOT_FORMS[Math.floor(Math.random()*SHOOT_FORMS.length)],dur:[30,30,45,60][Math.floor(Math.random()*4)]}));
+    saveData(state);renderDailyIdeas();
+    showToast('✓ 已生成 '+state.dailyIdeas.length+' 条落地选题');
+}
+function renderDailyIdeas(){
+    const list=document.getElementById('daily-idea-list');
+    list.innerHTML='';
+    state.dailyIdeas.forEach(d=>{
+        const used=state.usedTitles.includes(d.title);
+        const catName=d.cat==='agent'?'中介合作':d.cat==='owner'?'房东委托':'买家种草';
+        const src=IDEA_TOPICS[d.cat].find(t=>t.title===d.title);
+        const card=document.createElement('div');
+        card.className='daily-idea-card'+(used?' used':'');
+        card.innerHTML=`
+            <div class="daily-idea-top"><span class="daily-form-tag">${d.form}·${d.dur}秒</span><span class="daily-idea-title">${escapeHtml(d.title)}${used?'<span class="used-badge">✓ 已用</span>':''}</span></div>
+            <span class="daily-idea-kw">🔍 ${escapeHtml(d.kw)} · ${catName}</span>
+            <div class="daily-idea-hook">📌 开场钩子：${escapeHtml(d.hook)}</div>
+            <div class="script-box"></div>
+            <div class="idea-topic-actions">
+                <button class="topic-save">💡 存入灵感</button>
+                <button class="topic-script">🎬 生成脚本</button>
+                <button class="topic-copy">📋 复制</button>
+            </div>`;
+        const saveBtn=card.querySelector('.topic-save');
+        const copyBtn=card.querySelector('.topic-copy');
+        const scriptBtn=card.querySelector('.topic-script');
+        const scriptBox=card.querySelector('.script-box');
+        const fullText=`【${catName}·落地选题】\n形式：${d.form}（${d.dur}秒）\n标题：${d.title}\n关键词：${d.kw}\n\n开场钩子：${d.hook}`;
+        const scriptText=buildScript(catName,{title:d.title,kw:d.kw,points:src?src.points:[],hook:d.hook});
+        saveBtn.addEventListener('click',()=>{
+            const dd=getDayData(currentDate);
+            const text=`【选题】${d.title}`;
+            if(dd.inspiration.some(it=>it.text===text)){showToast('已存过了');return}
+            dd.inspiration.push({id:'i'+Date.now(),text:text,done:false});
+            saveData(state);markUsed(d.title);renderDailyIdeas();renderIdeaTopics(currentIdeaCat);
+            renderTasks('idea-list',dd.inspiration,'inspiration');updateProgress();showToast('✓ 已存入灵感');
+        });
+        copyBtn.addEventListener('click',()=>{navigator.clipboard.writeText(fullText).then(()=>showToast('✓ 已复制')).catch(()=>showToast('复制失败'))});
+        scriptBtn.addEventListener('click',()=>{
+            scriptBox.textContent=scriptText;scriptBox.classList.toggle('show');
+            if(scriptBox.classList.contains('show')){
+                markUsed(d.title);
+                card.classList.add('used');
+                if(!card.querySelector('.used-badge')){const b=document.createElement('span');b.className='used-badge';b.textContent='✓ 已用';card.querySelector('.daily-idea-title').appendChild(b);}
+                showToast('🎬 脚本已生成，可复制发布');
+            }
+        });
+        list.appendChild(card);
+    });
+}
+function genHousePromo(h){
+    const stageMap={agent:'建联中介',lead:'有效房源待评估',eval:'上门评估中',sign:'已签约·即将开工',reno:'改造中·即将完工',show:'集中看房中',deal:'已成交'};
+    const stageText=stageMap[h.stage]||'跟进中';
+    const cycle=h.sign?daysBetween(h.sign,todayStr()):null;
+    const cycleText=cycle!==null?`已推进 ${cycle} 天`:'待签约';
+    const text=`【房源推广·${h.name||'未命名房源'}】\n🏠 ${h.name||'—'} | ${h.age||'?'}年房龄 | ${h.elevator?'带电梯':'无电梯'} | 已挂${h.listed||'?'}月\n💰 房东底价 ${h.price||'?'}万 · 改造预算 ${h.budget||'?'}万 · 报源中介 ${h.agent||'—'}\n✨ 当前阶段：${stageText}（${cycleText}）\n🎯 卖点：零风险翻新代售——卖不掉硬装白送房东，买家省装修费，中介清库存分佣\n📌 钩子：常州想买性价比二手房的，私信「看房」，周末集中带看安排上`;
+    const dd=getDayData(currentDate);
+    if(dd.inspiration.some(it=>it.text.indexOf('房源推广')>-1&&it.text.indexOf(h.name||'')>-1)){showToast('这套已生成过了');return}
+    dd.inspiration.push({id:'i'+Date.now(),text:text,done:false});
+    saveData(state);
+    renderTasks('idea-list',dd.inspiration,'inspiration');updateProgress();
+    showToast('✓ 已生成推广内容并存入灵感');
+}
+
+let currentIdeaCat='agent';
+function syncTrackChips(){
+    document.querySelectorAll('#track-chips .track-chip').forEach(c=>{c.classList.toggle('on',!!state.trackLock[c.dataset.track]);});
+}
+function applyTrackLockUI(){
+    document.querySelectorAll('.idea-cat-tab').forEach(t=>{
+        const off=state.trackLockOn && !state.trackLock[t.dataset.cat];
+        t.classList.toggle('locked-off',off);
+        if(off && t.classList.contains('active')){
+            const first=document.querySelector('.idea-cat-tab:not(.locked-off)');
+            if(first){document.querySelectorAll('.idea-cat-tab').forEach(x=>x.classList.remove('active'));first.classList.add('active');currentIdeaCat=first.dataset.cat;}
+        }
+    });
+}
 document.querySelectorAll('.idea-cat-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
+        if(tab.classList.contains('locked-off')){showToast('该赛道已锁定隐藏');return;}
         document.querySelectorAll('.idea-cat-tab').forEach(t=>t.classList.remove('active'));
-        tab.classList.add('active');
-        renderIdeaTopics(tab.dataset.cat);
+        tab.classList.add('active');currentIdeaCat=tab.dataset.cat;
+        renderIdeaTopics(currentIdeaCat);
     });
 });
-renderIdeaTopics('agent');
+document.getElementById('track-lock').addEventListener('change',e=>{
+    state.trackLockOn=e.target.checked;saveData(state);applyTrackLockUI();renderIdeaTopics(currentIdeaCat);
+});
+document.querySelectorAll('#track-chips .track-chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+        const cat=c.dataset.track;
+        state.trackLock[cat]=!state.trackLock[cat];
+        if(!state.trackLock[cat] && Object.values(state.trackLock).every(v=>!v)){state.trackLock[cat]=true;showToast('至少保留一个赛道');}
+        saveData(state);syncTrackChips();applyTrackLockUI();renderIdeaTopics(currentIdeaCat);
+    });
+});
+document.getElementById('daily-gen-btn').addEventListener('click',genDailyIdeas);
+// 初始化
+document.getElementById('track-lock').checked=state.trackLockOn;
+syncTrackChips();applyTrackLockUI();renderIdeaTopics(currentIdeaCat);renderDailyIdeas();
 
 </script>
 </body>
